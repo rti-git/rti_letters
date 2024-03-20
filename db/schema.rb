@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_03_11_071750) do
+ActiveRecord::Schema[7.0].define(version: 2024_03_19_073642) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -26,4 +26,22 @@ ActiveRecord::Schema[7.0].define(version: 2024_03_11_071750) do
     t.index ["reset_password_token"], name: "index_admins_on_reset_password_token", unique: true
   end
 
+  create_table "articles", force: :cascade do |t|
+    t.string "title"
+    t.text "content"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "selected_articles", force: :cascade do |t|
+    t.bigint "admin_id", null: false
+    t.bigint "article_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["admin_id"], name: "index_selected_articles_on_admin_id"
+    t.index ["article_id"], name: "index_selected_articles_on_article_id"
+  end
+
+  add_foreign_key "selected_articles", "admins"
+  add_foreign_key "selected_articles", "articles"
 end

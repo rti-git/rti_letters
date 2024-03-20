@@ -2,13 +2,15 @@
 
 <%= link_to "登出", destroy_admin_session_path, data: { turbo_method: :delete } %>
 
-<ul>
-  <% @rss_feed_items.each do |channel| %>
-      <h1><%= channel %></h1>
+<%= form_with(url: create_newsletter_rss_feeds_path, method: :post) do |form| %>
+  <% @rss_feed_items.each do |article| %>
+    <div>
+      <%= form.check_box "selected_article_links[]", { multiple: true }, article.link, nil %>
+      <%= form.label "selected_article_links[]", article.title %>
+    </div>
   <% end %>
-  <% @rss_feed_items.each do |item| %>
-      <h2><%= link_to item.title, item.link %></h2>
-      <h3><%=  item.description %></h3>
-  <% end %>
-</ul>
+  <div>
+    <%= form.submit "建立電子報" %>
+  </div>
+<% end %>
 

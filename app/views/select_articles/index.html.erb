@@ -1,0 +1,7 @@
+<%= form_with url: select_articles_index_path, method: :post do |form| %>
+  <% @rss_articles.each do |article| %>
+    <%= check_box_tag 'selected_article_ids[]', article.id %>
+    <%= article.title %><br>
+  <% end %>
+  <%= form.submit "Save Selected Articles" %>
+<% end %>

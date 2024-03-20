@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  get 'select_articles/index'
   get 'articles/index'
   get 'rss_feeds/index'
   devise_for :admins
@@ -7,6 +8,13 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   # root "articles#index"
   root to: "home#index"
+
+  resources :rss_feeds do
+    post 'create_newsletter', on: :collection
+  end
+
+
+  resources :selected_articles, only: [:index, :create]
 
   authenticated :admin do
     #namespace :admin do
