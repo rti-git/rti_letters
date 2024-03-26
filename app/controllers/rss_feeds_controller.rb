@@ -3,13 +3,21 @@ class RssFeedsController < ApplicationController
 
   def index
     @rss_feed_items = fetch_rss
-    # redirect_to selected_articles_path(rss_feed_items: rss_feed_items)
   end
 
   def create_newsletter
-    selected_article_ids = params[:selected_articles_ids] || []
+    selected_article_links = params[:selected_article_links] || []
+    @rss_feed_items = fetch_rss
 
-    @selected_articles = @rss_feed_items.select { |article| selected_article_ids.include?(article.id) }
+
+    # @rss_feed_items = article.get_rss_feed_items
+    @selected_articles = @rss_feed_items.select { |article| selected_article_links.include?(article.link) }
+    
+    if @selected_articles.any?
+      render 'generate_newsletter'
+    else
+      redirect_to rss_feeds_path, alert: '選擇文章'
+    end
   end
 
   private
@@ -17,7 +25,6 @@ class RssFeedsController < ApplicationController
   def fetch_rss
     require "rss"
     require "open-uri"
-    
 
     # url = 'http://rss.cnn.com/rss/edition.rss'
      url = 'https://www.rti.org.tw/rss'
@@ -27,6 +34,4 @@ class RssFeedsController < ApplicationController
     rss = RSS::Parser.parse(rss_content, false)
     rss.items
   end
-
-  
 end

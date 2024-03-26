@@ -1,6 +1,6 @@
-# README
+# 發送電子報
 
-This README would normally document whatever steps are necessary to get the
+央廣建制電子報系統
 application up and running.
 
 Things you may want to cover:
